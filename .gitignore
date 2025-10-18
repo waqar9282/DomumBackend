@@ -36,3 +36,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Ignore common build outputs and generated files explicitly
+*.dll
+*.exe
+*.pdb
+*.apphost
+**/*.editorconfig

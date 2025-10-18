@@ -22,6 +22,13 @@ var _issuer = builder.Configuration["Jwt:Issuer"];
 var _audience = builder.Configuration["Jwt:Audience"];
 var _expirtyMinutes = builder.Configuration["Jwt:ExpiryMinutes"];
 
+// Validate JWT configuration early to avoid null reference exceptions at runtime
+if (string.IsNullOrWhiteSpace(_key) || string.IsNullOrWhiteSpace(_issuer)
+    || string.IsNullOrWhiteSpace(_audience) || string.IsNullOrWhiteSpace(_expirtyMinutes))
+{
+    throw new InvalidOperationException("JWT configuration is missing. Please set Jwt:Key, Jwt:Issuer, Jwt:Audience and Jwt:ExpiryMinutes in configuration.");
+}
+
 
 
 // Configuration for token
@@ -43,7 +50,9 @@ builder.Services.AddAuthentication(x =>
         ValidAudience = _audience,
         ValidIssuer = _issuer,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)),
-        ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes))
+    // ClockSkew should be a small tolerance window, not the token expiry value.
+    // Use a small tolerance (e.g. 5 minutes) to account for minor clock differences.
+    ClockSkew = TimeSpan.FromMinutes(5)
 
     };
 });
@@ -72,10 +81,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
+        // Allow the API to be called from the Angular dev server (http://localhost:4200)
+        // and the existing backend origin. Adjust or move to configuration for production.
         builder
-            .WithOrigins("https://localhost:7219")
+            .WithOrigins("https://localhost:7219", "http://localhost:4200")
             .AllowAnyMethod()
-            .AllowAnyHeader() // Allow any header
+            .AllowAnyHeader()
             .AllowCredentials();
     });
 });
