@@ -31,7 +31,7 @@ namespace DomumBackend.Application.Commands.Auth
 
             if (!result)
             {
-                throw new BadRequestException("Invalid username or password", 500);
+                throw new BadRequestException("Invalid username or password", 401);
             }
 
             var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.UserName));
