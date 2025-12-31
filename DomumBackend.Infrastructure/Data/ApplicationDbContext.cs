@@ -41,6 +41,22 @@ namespace DomumBackend.Infrastructure.Data
         public DbSet<PhysicalActivityLog> PhysicalActivityLogs { get; set; }
         public DbSet<MentalHealthCheckIn> MentalHealthCheckIns { get; set; }
 
+        // Phase 3A: Reporting & Analytics
+        public DbSet<IncidentReport> IncidentReports { get; set; }
+        public DbSet<HealthMetricsReport> HealthMetricsReports { get; set; }
+        public DbSet<FacilityReport> FacilityReports { get; set; }
+
+        // Phase 3B: Notifications & Alerting
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<AlertRule> AlertRules { get; set; }
+        public DbSet<NotificationPreference> NotificationPreferences { get; set; }
+        public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
+
+        // Phase 3C: Document Management & Records
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<DocumentCategory> DocumentCategories { get; set; }
+        public DbSet<DocumentAccess> DocumentAccesses { get; set; }
+        public DbSet<DocumentRetention> DocumentRetentions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -328,6 +344,210 @@ namespace DomumBackend.Infrastructure.Data
                 .HasIndex(mhc => mhc.CurrentMood);
             modelBuilder.Entity<MentalHealthCheckIn>()
                 .HasIndex(mhc => mhc.CheckInDate);
+
+            // Phase 3A - Reporting & Analytics
+            modelBuilder.Entity<IncidentReport>()
+                .HasIndex(ir => ir.FacilityId);
+            modelBuilder.Entity<IncidentReport>()
+                .HasIndex(ir => ir.ReportGeneratedDate);
+            modelBuilder.Entity<IncidentReport>()
+                .HasOne(ir => ir.Facility)
+                .WithMany()
+                .HasForeignKey(ir => ir.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<IncidentReport>()
+                .Property(ir => ir.IncidentTrend)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<HealthMetricsReport>()
+                .HasIndex(hmr => hmr.FacilityId);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .HasIndex(hmr => hmr.ReportGeneratedDate);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .HasOne(hmr => hmr.Facility)
+                .WithMany()
+                .HasForeignKey(hmr => hmr.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageBodyMassIndex)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageHeight)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageWeight)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageBloodPressureSystolic)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageBloodPressureDiastolic)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageCaloriesPerDay)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageProteinIntake)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageFatIntake)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageActivityMinutesPerWeek)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.AverageMoodScore)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.MedicationComplianceRate)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<HealthMetricsReport>()
+                .Property(hmr => hmr.ActivityComplianceRate)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<FacilityReport>()
+                .HasIndex(fr => fr.FacilityId);
+            modelBuilder.Entity<FacilityReport>()
+                .HasIndex(fr => fr.ReportGeneratedDate);
+            modelBuilder.Entity<FacilityReport>()
+                .HasOne(fr => fr.Facility)
+                .WithMany()
+                .HasForeignKey(fr => fr.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.ComplianceScore)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.IncidentReductionRate)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.HealthGoalCompletionRate)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.SuccessfulOutcomeRate)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.StaffRetentionRate)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.StorageUtilizationPercentage)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.KPI1_Value)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.KPI2_Value)
+                .HasPrecision(10, 2);
+            modelBuilder.Entity<FacilityReport>()
+                .Property(fr => fr.KPI3_Value)
+                .HasPrecision(10, 2);
+
+            // Phase 3B - Notifications & Alerting
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.FacilityId);
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.RecipientUserId);
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.Status);
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.CreatedDate_Scheduled);
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Facility)
+                .WithMany()
+                .HasForeignKey(n => n.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<AlertRule>()
+                .HasIndex(ar => ar.FacilityId);
+            modelBuilder.Entity<AlertRule>()
+                .HasIndex(ar => ar.IsActive);
+            modelBuilder.Entity<AlertRule>()
+                .HasOne(ar => ar.Facility)
+                .WithMany()
+                .HasForeignKey(ar => ar.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<NotificationPreference>()
+                .HasIndex(np => np.UserId);
+            modelBuilder.Entity<NotificationPreference>()
+                .HasIndex(np => np.FacilityId);
+            modelBuilder.Entity<NotificationPreference>()
+                .HasOne(np => np.Facility)
+                .WithMany()
+                .HasForeignKey(np => np.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<NotificationTemplate>()
+                .HasIndex(nt => nt.FacilityId);
+            modelBuilder.Entity<NotificationTemplate>()
+                .HasIndex(nt => nt.TemplateKey);
+            modelBuilder.Entity<NotificationTemplate>()
+                .HasIndex(nt => nt.Category);
+            modelBuilder.Entity<NotificationTemplate>()
+                .HasOne(nt => nt.Facility)
+                .WithMany()
+                .HasForeignKey(nt => nt.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Phase 3C - Document Management & Records
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.FacilityId);
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.DocumentType);
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.DocumentCategory);
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.UploadedDate);
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.Status);
+            modelBuilder.Entity<Document>()
+                .HasIndex(d => d.ExpiryDate);
+            modelBuilder.Entity<Document>()
+                .HasOne(d => d.Facility)
+                .WithMany()
+                .HasForeignKey(d => d.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<DocumentCategory>()
+                .HasIndex(dc => dc.FacilityId);
+            modelBuilder.Entity<DocumentCategory>()
+                .HasIndex(dc => dc.CategoryCode);
+            modelBuilder.Entity<DocumentCategory>()
+                .HasOne(dc => dc.Facility)
+                .WithMany()
+                .HasForeignKey(dc => dc.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<DocumentAccess>()
+                .HasIndex(da => da.FacilityId);
+            modelBuilder.Entity<DocumentAccess>()
+                .HasIndex(da => da.DocumentId);
+            modelBuilder.Entity<DocumentAccess>()
+                .HasIndex(da => da.AccessedByUserId);
+            modelBuilder.Entity<DocumentAccess>()
+                .HasIndex(da => da.AccessedDate);
+            modelBuilder.Entity<DocumentAccess>()
+                .HasOne(da => da.Facility)
+                .WithMany()
+                .HasForeignKey(da => da.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<DocumentAccess>()
+                .HasOne(da => da.Document)
+                .WithMany()
+                .HasForeignKey(da => da.DocumentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<DocumentRetention>()
+                .HasIndex(dr => dr.FacilityId);
+            modelBuilder.Entity<DocumentRetention>()
+                .HasIndex(dr => dr.DocumentType);
+            modelBuilder.Entity<DocumentRetention>()
+                .HasIndex(dr => dr.IsActive);
+            modelBuilder.Entity<DocumentRetention>()
+                .HasOne(dr => dr.Facility)
+                .WithMany()
+                .HasForeignKey(dr => dr.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

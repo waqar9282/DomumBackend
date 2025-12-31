@@ -58,6 +58,24 @@ namespace DomumBackend.Infrastructure
             services.AddScoped<IPhysicalActivityLogService, PhysicalActivityLogService>();
             services.AddScoped<IMentalHealthCheckInService, MentalHealthCheckInService>();
             
+            // Phase 3A: Reporting & Analytics Services
+            services.AddScoped<IIncidentReportingService, IncidentReportingService>();
+            services.AddScoped<IHealthAnalyticsService, HealthAnalyticsService>();
+            services.AddScoped<IFacilityReportingService, FacilityReportingService>();
+            services.AddScoped<IReportExportService, ReportExportService>();
+            
+            // Phase 3B: Notifications & Alerting Services
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IAlertRuleService, AlertRuleService>();
+            services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
+            services.AddScoped<INotificationTemplateService, NotificationTemplateService>();
+            
+            // Phase 3C: Document Management & Records Services
+            services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IDocumentCategoryService, DocumentCategoryService>();
+            services.AddScoped<IDocumentAccessService, DocumentAccessService>();
+            services.AddScoped<IDocumentRetentionService, DocumentRetentionService>();
+            
             services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
             services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 
