@@ -49,6 +49,15 @@ namespace DomumBackend.Infrastructure
 
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IIncidentService, IncidentService>();
+            
+            // Health & Wellness Services
+            services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+            services.AddScoped<IMedicationService, MedicationService>();
+            services.AddScoped<IHealthAssessmentService, HealthAssessmentService>();
+            services.AddScoped<INutritionLogService, NutritionLogService>();
+            services.AddScoped<IPhysicalActivityLogService, PhysicalActivityLogService>();
+            services.AddScoped<IMentalHealthCheckInService, MentalHealthCheckInService>();
+            
             services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
             services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 

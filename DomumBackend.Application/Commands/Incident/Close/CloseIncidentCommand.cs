@@ -8,8 +8,8 @@ namespace DomumBackend.Application.Commands.Incident
     /// </summary>
     public class CloseIncidentCommand : IRequest<int>
     {
-        public string Id { get; set; }
-        public string ClosingNotes { get; set; }
+        public required string Id { get; set; }
+        public required string ClosingNotes { get; set; }
     }
 
     public class CloseIncidentCommandHandler : IRequestHandler<CloseIncidentCommand, int>

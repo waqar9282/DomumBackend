@@ -33,6 +33,15 @@ namespace DomumBackend.Infrastructure.Data
         public DbSet<SafetyAlert> SafetyAlerts { get; set; }
         public DbSet<SafeguardingConcern> SafeguardingConcerns { get; set; }
 
+        // Phase 2: Health & Wellness
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<Medication> Medications { get; set; }
+        public DbSet<HealthAssessment> HealthAssessments { get; set; }
+        public DbSet<NutritionLog> NutritionLogs { get; set; }
+        public DbSet<PhysicalActivityLog> PhysicalActivityLogs { get; set; }
+        public DbSet<MentalHealthCheckIn> MentalHealthCheckIns { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -175,6 +184,150 @@ namespace DomumBackend.Infrastructure.Data
                 .HasIndex(sc => sc.ConcernType);
             modelBuilder.Entity<SafeguardingConcern>()
                 .HasIndex(sc => sc.Status);
+
+            // ===== PHASE 2: HEALTH & WELLNESS =====
+
+            // MedicalRecord configuration
+            modelBuilder.Entity<MedicalRecord>()
+                .HasKey(m => m.Id);
+            modelBuilder.Entity<MedicalRecord>()
+                .HasOne(m => m.YoungPerson)
+                .WithMany()
+                .HasForeignKey(m => m.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Medical records must persist for health history
+            modelBuilder.Entity<MedicalRecord>()
+                .HasIndex(m => m.FacilityId);
+            modelBuilder.Entity<MedicalRecord>()
+                .HasIndex(m => m.YoungPersonId);
+            modelBuilder.Entity<MedicalRecord>()
+                .HasIndex(m => m.AppointmentDate);
+            modelBuilder.Entity<MedicalRecord>()
+                .HasIndex(m => m.Status);
+
+            // Medication configuration
+            modelBuilder.Entity<Medication>()
+                .HasKey(m => m.Id);
+            modelBuilder.Entity<Medication>()
+                .HasOne(m => m.YoungPerson)
+                .WithMany()
+                .HasForeignKey(m => m.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Medication records critical for health
+            modelBuilder.Entity<Medication>()
+                .HasIndex(m => m.FacilityId);
+            modelBuilder.Entity<Medication>()
+                .HasIndex(m => m.YoungPersonId);
+            modelBuilder.Entity<Medication>()
+                .HasIndex(m => m.Status);
+            modelBuilder.Entity<Medication>()
+                .HasIndex(m => m.StartDate);
+
+            // HealthAssessment configuration
+            modelBuilder.Entity<HealthAssessment>()
+                .HasKey(ha => ha.Id);
+            modelBuilder.Entity<HealthAssessment>()
+                .HasOne(ha => ha.YoungPerson)
+                .WithMany()
+                .HasForeignKey(ha => ha.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Assessment history critical for wellbeing
+            
+            // Decimal precision for health measurements
+            modelBuilder.Entity<HealthAssessment>()
+                .Property(ha => ha.Height)
+                .HasPrecision(10, 2); // cm with 2 decimal places
+            modelBuilder.Entity<HealthAssessment>()
+                .Property(ha => ha.Weight)
+                .HasPrecision(10, 2); // kg with 2 decimal places
+            modelBuilder.Entity<HealthAssessment>()
+                .Property(ha => ha.BMI)
+                .HasPrecision(10, 2); // BMI with 2 decimal places
+            modelBuilder.Entity<HealthAssessment>()
+                .Property(ha => ha.BodyTemperature)
+                .HasPrecision(5, 2); // Temperature with 2 decimal places
+            
+            modelBuilder.Entity<HealthAssessment>()
+                .HasIndex(ha => ha.FacilityId);
+            modelBuilder.Entity<HealthAssessment>()
+                .HasIndex(ha => ha.YoungPersonId);
+            modelBuilder.Entity<HealthAssessment>()
+                .HasIndex(ha => ha.AssessmentType);
+            modelBuilder.Entity<HealthAssessment>()
+                .HasIndex(ha => ha.AssessmentDate);
+
+            // NutritionLog configuration
+            modelBuilder.Entity<NutritionLog>()
+                .HasKey(nl => nl.Id);
+            modelBuilder.Entity<NutritionLog>()
+                .HasOne(nl => nl.YoungPerson)
+                .WithMany()
+                .HasForeignKey(nl => nl.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            // Decimal precision for nutritional values
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.PortionSize)
+                .HasPrecision(10, 2); // grams or ml
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Calories)
+                .HasPrecision(10, 2); // Calories per serving
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Protein)
+                .HasPrecision(10, 2); // grams
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Carbohydrates)
+                .HasPrecision(10, 2); // grams
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Fat)
+                .HasPrecision(10, 2); // grams
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Fiber)
+                .HasPrecision(10, 2); // grams
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Sugar)
+                .HasPrecision(10, 2); // grams
+            modelBuilder.Entity<NutritionLog>()
+                .Property(nl => nl.Sodium)
+                .HasPrecision(10, 2); // mg
+            
+            modelBuilder.Entity<NutritionLog>()
+                .HasIndex(nl => nl.FacilityId);
+            modelBuilder.Entity<NutritionLog>()
+                .HasIndex(nl => nl.YoungPersonId);
+            modelBuilder.Entity<NutritionLog>()
+                .HasIndex(nl => nl.LogDate);
+
+            // PhysicalActivityLog configuration
+            modelBuilder.Entity<PhysicalActivityLog>()
+                .HasKey(pal => pal.Id);
+            modelBuilder.Entity<PhysicalActivityLog>()
+                .HasOne(pal => pal.YoungPerson)
+                .WithMany()
+                .HasForeignKey(pal => pal.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PhysicalActivityLog>()
+                .HasIndex(pal => pal.FacilityId);
+            modelBuilder.Entity<PhysicalActivityLog>()
+                .HasIndex(pal => pal.YoungPersonId);
+            modelBuilder.Entity<PhysicalActivityLog>()
+                .HasIndex(pal => pal.ActivityType);
+            modelBuilder.Entity<PhysicalActivityLog>()
+                .HasIndex(pal => pal.ActivityDate);
+
+            // MentalHealthCheckIn configuration
+            modelBuilder.Entity<MentalHealthCheckIn>()
+                .HasKey(mhc => mhc.Id);
+            modelBuilder.Entity<MentalHealthCheckIn>()
+                .HasOne(mhc => mhc.YoungPerson)
+                .WithMany()
+                .HasForeignKey(mhc => mhc.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Mental health records are sensitive and critical
+            modelBuilder.Entity<MentalHealthCheckIn>()
+                .HasIndex(mhc => mhc.FacilityId);
+            modelBuilder.Entity<MentalHealthCheckIn>()
+                .HasIndex(mhc => mhc.YoungPersonId);
+            modelBuilder.Entity<MentalHealthCheckIn>()
+                .HasIndex(mhc => mhc.CurrentMood);
+            modelBuilder.Entity<MentalHealthCheckIn>()
+                .HasIndex(mhc => mhc.CheckInDate);
         }
     }
 }

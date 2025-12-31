@@ -9,25 +9,25 @@ namespace DomumBackend.Application.Commands.Incident
     /// </summary>
     public class CreateIncidentCommand : IRequest<string>
     {
-        public string FacilityId { get; set; }
-        public string YoungPersonId { get; set; }
+        public required string FacilityId { get; set; }
+        public required string YoungPersonId { get; set; }
         public IncidentType IncidentType { get; set; }
         public IncidentSeverity Severity { get; set; }
-        public string Description { get; set; }
+        public required string Description { get; set; }
         public DateTime IncidentDate { get; set; }
-        public string ReportedByUserId { get; set; }
-        public string Location { get; set; }
-        public string OtherPersonsInvolved { get; set; }
-        public string StaffPresent { get; set; }
-        public string InjuriesDescription { get; set; }
-        public string TreatmentProvided { get; set; }
+        public required string ReportedByUserId { get; set; }
+        public required string Location { get; set; }
+        public string? OtherPersonsInvolved { get; set; }
+        public string? StaffPresent { get; set; }
+        public string? InjuriesDescription { get; set; }
+        public string? TreatmentProvided { get; set; }
         public bool MedicalAttentionRequired { get; set; }
-        public string MedicalTreatmentLocation { get; set; }
-        public string WitnessStatements { get; set; }
-        public string RootCause { get; set; }
-        public string CorrectiveActions { get; set; }
+        public string? MedicalTreatmentLocation { get; set; }
+        public string? WitnessStatements { get; set; }
+        public string? RootCause { get; set; }
+        public string? CorrectiveActions { get; set; }
         public bool IsNotifiable { get; set; }
-        public string NotifiedAuthority { get; set; }
+        public string? NotifiedAuthority { get; set; }
         public bool IsConfidential { get; set; }
     }
 
@@ -51,17 +51,17 @@ namespace DomumBackend.Application.Commands.Incident
                 request.IncidentDate,
                 request.ReportedByUserId,
                 request.Location,
-                request.OtherPersonsInvolved,
-                request.StaffPresent,
-                request.InjuriesDescription,
-                request.TreatmentProvided,
+                request.OtherPersonsInvolved ?? "",
+                request.StaffPresent ?? "",
+                request.InjuriesDescription ?? "",
+                request.TreatmentProvided ?? "",
                 request.MedicalAttentionRequired,
-                request.MedicalTreatmentLocation,
-                request.WitnessStatements,
-                request.RootCause,
-                request.CorrectiveActions,
+                request.MedicalTreatmentLocation ?? "",
+                request.WitnessStatements ?? "",
+                request.RootCause ?? "",
+                request.CorrectiveActions ?? "",
                 request.IsNotifiable,
-                request.NotifiedAuthority,
+                request.NotifiedAuthority ?? "",
                 request.IsConfidential,
                 cancellationToken);
         }

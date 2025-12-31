@@ -9,7 +9,7 @@ namespace DomumBackend.Domain.Entities
     /// </summary>
     public class SafetyAlert : BaseEntity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public new string Id { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>
         /// The facility where the alert applies

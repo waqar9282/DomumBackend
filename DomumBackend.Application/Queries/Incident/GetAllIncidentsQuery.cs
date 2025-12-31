@@ -9,7 +9,7 @@ namespace DomumBackend.Application.Queries.Incident
     /// </summary>
     public class GetAllIncidentsQuery : IRequest<List<IncidentResponseDTO>>
     {
-        public string FacilityId { get; set; }
+        public required string FacilityId { get; set; }
     }
 
     public class GetAllIncidentsQueryHandler : IRequestHandler<GetAllIncidentsQuery, List<IncidentResponseDTO>>

@@ -9,17 +9,17 @@ namespace DomumBackend.Application.Commands.Incident
     /// </summary>
     public class UpdateIncidentCommand : IRequest<int>
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        public required string Id { get; set; }
+        public required string Description { get; set; }
         public IncidentSeverity Severity { get; set; }
-        public string InjuriesDescription { get; set; }
-        public string TreatmentProvided { get; set; }
+        public string? InjuriesDescription { get; set; }
+        public string? TreatmentProvided { get; set; }
         public bool MedicalAttentionRequired { get; set; }
-        public string MedicalTreatmentLocation { get; set; }
-        public string RootCause { get; set; }
-        public string CorrectiveActions { get; set; }
+        public string? MedicalTreatmentLocation { get; set; }
+        public string? RootCause { get; set; }
+        public string? CorrectiveActions { get; set; }
         public bool IsNotifiable { get; set; }
-        public string NotifiedAuthority { get; set; }
+        public string? NotifiedAuthority { get; set; }
     }
 
     public class UpdateIncidentCommandHandler : IRequestHandler<UpdateIncidentCommand, int>
@@ -37,14 +37,14 @@ namespace DomumBackend.Application.Commands.Incident
                 request.Id,
                 request.Description,
                 request.Severity,
-                request.InjuriesDescription,
-                request.TreatmentProvided,
+                request.InjuriesDescription ?? "",
+                request.TreatmentProvided ?? "",
                 request.MedicalAttentionRequired,
-                request.MedicalTreatmentLocation,
-                request.RootCause,
-                request.CorrectiveActions,
+                request.MedicalTreatmentLocation ?? "",
+                request.RootCause ?? "",
+                request.CorrectiveActions ?? "",
                 request.IsNotifiable,
-                request.NotifiedAuthority,
+                request.NotifiedAuthority ?? "",
                 cancellationToken);
         }
     }

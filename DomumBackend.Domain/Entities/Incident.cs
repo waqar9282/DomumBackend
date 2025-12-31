@@ -14,7 +14,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Unique identifier for the incident
         /// </summary>
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public new string Id { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>
         /// The facility where the incident occurred
