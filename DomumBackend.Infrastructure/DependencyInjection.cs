@@ -48,6 +48,7 @@ namespace DomumBackend.Infrastructure
             });
 
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IIncidentService, IncidentService>();
             services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
             services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 

@@ -27,6 +27,12 @@ namespace DomumBackend.Infrastructure.Data
         public DbSet<YoungPerson> YoungPeople { get; set; }
         public DbSet<Room> Rooms { get; set; }
 
+        // Phase 1: Compliance & Audit
+        public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<Incident> Incidents { get; set; }
+        public DbSet<SafetyAlert> SafetyAlerts { get; set; }
+        public DbSet<SafeguardingConcern> SafeguardingConcerns { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -81,6 +87,94 @@ namespace DomumBackend.Infrastructure.Data
             modelBuilder.Entity<YoungPerson>()
                 .Property(y => y.Height)
                 .HasPrecision(5, 2); // Allows values like 123.45
+
+            // ===== PHASE 1: COMPLIANCE & AUDIT =====
+
+            // AuditLog configuration
+            modelBuilder.Entity<AuditLog>()
+                .HasKey(a => a.Id);
+            modelBuilder.Entity<AuditLog>()
+                .HasIndex(a => a.EntityId);
+            modelBuilder.Entity<AuditLog>()
+                .HasIndex(a => a.UserId);
+            modelBuilder.Entity<AuditLog>()
+                .HasIndex(a => a.Timestamp);
+
+            // Incident configuration
+            modelBuilder.Entity<Incident>()
+                .HasKey(i => i.Id);
+            modelBuilder.Entity<Incident>()
+                .HasOne(i => i.Facility)
+                .WithMany()
+                .HasForeignKey(i => i.FacilityId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Incident>()
+                .HasOne(i => i.YoungPerson)
+                .WithMany()
+                .HasForeignKey(i => i.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Incident records must persist even if young person is deleted (compliance)
+            modelBuilder.Entity<Incident>()
+                .HasIndex(i => i.FacilityId);
+            modelBuilder.Entity<Incident>()
+                .HasIndex(i => i.YoungPersonId);
+            modelBuilder.Entity<Incident>()
+                .HasIndex(i => i.IncidentDate);
+            modelBuilder.Entity<Incident>()
+                .HasIndex(i => i.Status);
+
+            // SafetyAlert configuration
+            modelBuilder.Entity<SafetyAlert>()
+                .HasKey(sa => sa.Id);
+            modelBuilder.Entity<SafetyAlert>()
+                .HasOne(sa => sa.Facility)
+                .WithMany()
+                .HasForeignKey(sa => sa.FacilityId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SafetyAlert>()
+                .HasOne(sa => sa.YoungPerson)
+                .WithMany()
+                .HasForeignKey(sa => sa.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Safety alerts must persist for audit trail
+            modelBuilder.Entity<SafetyAlert>()
+                .HasIndex(sa => sa.FacilityId);
+            modelBuilder.Entity<SafetyAlert>()
+                .HasIndex(sa => sa.YoungPersonId);
+            modelBuilder.Entity<SafetyAlert>()
+                .HasIndex(sa => sa.AlertLevel);
+            modelBuilder.Entity<SafetyAlert>()
+                .HasIndex(sa => sa.IsActive);
+
+            // SafeguardingConcern configuration
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasKey(sc => sc.Id);
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasOne(sc => sc.Facility)
+                .WithMany()
+                .HasForeignKey(sc => sc.FacilityId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasOne(sc => sc.YoungPerson)
+                .WithMany()
+                .HasForeignKey(sc => sc.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction); // Safeguarding records must persist for compliance
+            
+            // Many-to-many: Incident <-> SafeguardingConcern (with NoAction on join table)
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasMany(sc => sc.LinkedIncidents)
+                .WithMany(i => i.LinkedConcerns)
+                .UsingEntity<Dictionary<string, object>>(
+                    "IncidentSafeguardingConcern",
+                    j => j.HasOne<Incident>().WithMany().OnDelete(DeleteBehavior.NoAction),
+                    j => j.HasOne<SafeguardingConcern>().WithMany().OnDelete(DeleteBehavior.NoAction));
+            
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasIndex(sc => sc.FacilityId);
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasIndex(sc => sc.YoungPersonId);
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasIndex(sc => sc.ConcernType);
+            modelBuilder.Entity<SafeguardingConcern>()
+                .HasIndex(sc => sc.Status);
         }
     }
 }
