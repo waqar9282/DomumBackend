@@ -11,7 +11,7 @@ namespace DomumBackend.Application.Queries.User
 {
     public class GetUserDetailsByUserNameQuery : IRequest<UserDetailsResponseDTO>
     {
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
     }
 
     public class GetUserDetailsByUserNameQueryHandler : IRequestHandler<GetUserDetailsByUserNameQuery, UserDetailsResponseDTO>
@@ -29,4 +29,5 @@ namespace DomumBackend.Application.Queries.User
         }
     }
 }
+
 

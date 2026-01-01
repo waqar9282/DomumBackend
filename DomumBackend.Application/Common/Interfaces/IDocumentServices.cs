@@ -24,13 +24,13 @@ namespace DomumBackend.Application.Common.Interfaces
         Task<List<DocumentDTO>> GetArchivedDocumentsAsync(string facilityId, int pageNumber, int pageSize);
 
         // Versioning
-        Task<DocumentVersionDTO> CreateVersionAsync(long documentId, string facilityId, string userId, Stream newFileStream, string versionNotes);
+        Task<DocumentVersionDTO> CreateVersionAsync(long documentId, string facilityId, string userId, Stream newFileStream, string? versionNotes);
         Task<List<DocumentVersionDTO>> GetDocumentVersionsAsync(long documentId, string facilityId);
         Task<DocumentDetailDTO> RestoreVersionAsync(long documentId, int versionNumber, string facilityId, string userId);
 
         // Metadata Operations
         Task UpdateDocumentMetadataAsync(long documentId, string facilityId, DocumentMetadataUpdateDTO metadata);
-        Task SetAccessLevelAsync(long documentId, string facilityId, string accessLevel, string[] allowedRoles = null, string[] allowedUserIds = null);
+        Task SetAccessLevelAsync(long documentId, string facilityId, string accessLevel, string[]? allowedRoles = null, string[]? allowedUserIds = null);
         Task AddTagsAsync(long documentId, string facilityId, string[] tags);
         Task RemoveTagsAsync(long documentId, string facilityId, string[] tags);
 
@@ -68,7 +68,7 @@ namespace DomumBackend.Application.Common.Interfaces
         Task UpdateCategoryAsync(string facilityId, string categoryCode, DocumentCategoryDTO updates);
         Task DeleteCategoryAsync(string facilityId, string categoryCode);
         Task<int> GetDocumentCountByCategoryAsync(string facilityId, string categoryCode);
-        Task SetDefaultAccessLevelAsync(string facilityId, string categoryCode, string accessLevel, string[] roles = null);
+        Task SetDefaultAccessLevelAsync(string facilityId, string categoryCode, string accessLevel, string[]? roles = null);
         Task SetDefaultRetentionAsync(string facilityId, string categoryCode, int retentionDays, string reason);
     }
 
@@ -80,7 +80,7 @@ namespace DomumBackend.Application.Common.Interfaces
         Task<List<DocumentAccessDTO>> GetUserAccessHistoryAsync(string facilityId, string userId, int pageNumber, int pageSize);
 
         // Access Control Verification
-        Task<bool> CanUserAccessDocumentAsync(string facilityId, long documentId, string userId, string requiredRole = null);
+        Task<bool> CanUserAccessDocumentAsync(string facilityId, long documentId, string userId, string? requiredRole = null);
         Task<bool> CanUserDownloadAsync(string facilityId, long documentId, string userId);
         Task<bool> CanUserPrintAsync(string facilityId, long documentId, string userId);
         Task<bool> CanUserShareAsync(string facilityId, long documentId, string userId);
@@ -138,13 +138,13 @@ namespace DomumBackend.Application.Common.Interfaces
 
     public class DocumentFilterCriteria
     {
-        public string DocumentType { get; set; }
-        public string DocumentCategory { get; set; }
-        public string Status { get; set; }
-        public string ClassificationLevel { get; set; }
+        public string? DocumentType { get; set; }
+        public string? DocumentCategory { get; set; }
+        public string? Status { get; set; }
+        public string? ClassificationLevel { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-        public string UploadedByUserId { get; set; }
-        public string[] Tags { get; set; }
+        public string? UploadedByUserId { get; set; }
+        public string[]? Tags { get; set; }
     }
 }

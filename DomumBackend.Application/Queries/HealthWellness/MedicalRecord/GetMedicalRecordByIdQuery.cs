@@ -5,7 +5,7 @@ namespace DomumBackend.Application.Queries.HealthWellness.MedicalRecord
 {
     public class GetMedicalRecordByIdQuery : IRequest<MedicalRecordResponseDTO>
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public GetMedicalRecordByIdQuery(string id)
         {
@@ -13,3 +13,4 @@ namespace DomumBackend.Application.Queries.HealthWellness.MedicalRecord
         }
     }
 }
+

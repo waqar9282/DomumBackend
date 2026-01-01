@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 public interface IAnalyticsMetricService
 {
     Task<AnalyticsMetricDTO> CreateMetricAsync(string facilityId, AnalyticsMetricDTO dto);
-    Task<AnalyticsMetricDTO> GetMetricByIdAsync(Guid metricId);
-    Task<AnalyticsMetricDTO> GetMetricByCodeAsync(string facilityId, string metricCode);
+    Task<AnalyticsMetricDTO?> GetMetricByIdAsync(Guid metricId);
+    Task<AnalyticsMetricDTO?> GetMetricByCodeAsync(string facilityId, string metricCode);
     Task<List<AnalyticsMetricDTO>> GetMetricsByCategoryAsync(string facilityId, string category);
     Task<List<AnalyticsMetricDTO>> GetMetricsBySubCategoryAsync(string facilityId, string category, string subCategory);
     Task<List<AnalyticsMetricDTO>> GetAllMetricsAsync(string facilityId);
@@ -28,8 +28,8 @@ public interface IAnalyticsMetricService
 public interface ITrendAnalysisService
 {
     Task<TrendAnalysisDTO> CreateTrendAnalysisAsync(string facilityId, long metricId, int daysToAnalyze);
-    Task<TrendAnalysisDTO> GetTrendAnalysisAsync(Guid trendId);
-    Task<TrendAnalysisDTO> GetLatestTrendAsync(long metricId);
+    Task<TrendAnalysisDTO?> GetTrendAnalysisAsync(Guid trendId);
+    Task<TrendAnalysisDTO?> GetLatestTrendAsync(long metricId);
     Task<List<TrendAnalysisDTO>> GetTrendsByTypeAsync(string facilityId, string trendType);
     Task<List<TrendAnalysisDTO>> GetSeasonalTrendsAsync(string facilityId);
     Task<List<TrendAnalysisDTO>> GetAnomalouseTrendsAsync(string facilityId);
@@ -47,7 +47,7 @@ public interface ITrendAnalysisService
 public interface IPredictiveAlertService
 {
     Task<PredictiveAlertDTO> CreateAlertAsync(string facilityId, PredictiveAlertDTO dto);
-    Task<PredictiveAlertDTO> GetAlertByIdAsync(Guid alertId);
+    Task<PredictiveAlertDTO?> GetAlertByIdAsync(Guid alertId);
     Task<List<PredictiveAlertDTO>> GetActiveAlertsAsync(string facilityId);
     Task<List<PredictiveAlertDTO>> GetAlertsByStatusAsync(string facilityId, string status);
     Task<List<PredictiveAlertDTO>> GetAlertsByTypeAsync(string facilityId, string alertType);
@@ -56,9 +56,9 @@ public interface IPredictiveAlertService
     Task<List<PredictiveAlertDTO>> GetOverdueAlertsAsync(string facilityId);
     Task<List<PredictiveAlertDTO>> GetRecurringAlertsAsync(string facilityId);
     Task<PredictiveAlertDTO> UpdateAlertAsync(Guid alertId, PredictiveAlertDTO dto);
-    Task<PredictiveAlertDTO> AcknowledgeAlertAsync(Guid alertId, Guid userId, string notes = null);
-    Task<PredictiveAlertDTO> ResolveAlertAsync(Guid alertId, Guid userId, string notes = null);
-    Task<PredictiveAlertDTO> AssignAlertAsync(Guid alertId, Guid userId, string notes = null);
+    Task<PredictiveAlertDTO> AcknowledgeAlertAsync(Guid alertId, Guid userId, string? notes = null);
+    Task<PredictiveAlertDTO> ResolveAlertAsync(Guid alertId, Guid userId, string? notes = null);
+    Task<PredictiveAlertDTO> AssignAlertAsync(Guid alertId, Guid userId, string? notes = null);
     Task<PredictiveAlertDTO> EscalateAlertAsync(Guid alertId, Guid escalatedToUserId, string reason);
     Task DeleteAlertAsync(Guid alertId);
     Task<int> GetAlertCountByTypeAsync(string facilityId, string alertType);
@@ -71,8 +71,8 @@ public interface IPredictiveAlertService
 public interface ICustomDashboardService
 {
     Task<CustomDashboardDTO> CreateDashboardAsync(string facilityId, Guid userId, CustomDashboardDTO dto);
-    Task<CustomDashboardDTO> GetDashboardByIdAsync(Guid dashboardId);
-    Task<CustomDashboardDTO> GetDashboardByCodeAsync(string facilityId, string dashboardCode);
+    Task<CustomDashboardDTO?> GetDashboardByIdAsync(Guid dashboardId);
+    Task<CustomDashboardDTO?> GetDashboardByCodeAsync(string facilityId, string dashboardCode);
     Task<List<CustomDashboardDTO>> GetDashboardsByFacilityAsync(string facilityId);
     Task<List<CustomDashboardDTO>> GetDashboardsByTypeAsync(string facilityId, string dashboardType);
     Task<List<CustomDashboardDTO>> GetDefaultDashboardsAsync(string facilityId);
@@ -84,7 +84,7 @@ public interface ICustomDashboardService
     Task<CustomDashboardDTO> UpdateWidgetAsync(Guid dashboardId, Guid widgetId, DashboardWidgetDTO widget);
     Task<CustomDashboardDTO> AddFilterAsync(Guid dashboardId, DashboardFilterDTO filter);
     Task<CustomDashboardDTO> RemoveFilterAsync(Guid dashboardId, Guid filterId);
-    Task<CustomDashboardDTO> ShareDashboardAsync(Guid dashboardId, List<Guid> userIds, List<string> roles = null);
+    Task<CustomDashboardDTO> ShareDashboardAsync(Guid dashboardId, List<Guid> userIds, List<string>? roles = null);
     Task<CustomDashboardDTO> UnshareWithUserAsync(Guid dashboardId, Guid userId);
     Task<CustomDashboardDTO> MakeDashboardDefaultAsync(Guid dashboardId);
     Task DeleteDashboardAsync(Guid dashboardId);

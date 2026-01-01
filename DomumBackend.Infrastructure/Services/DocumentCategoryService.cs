@@ -85,7 +85,7 @@ namespace DomumBackend.Infrastructure.Services
                 .CountAsync(d => d.FacilityId == facilityId && d.DocumentCategory == categoryCode);
         }
 
-        public async Task SetDefaultAccessLevelAsync(string facilityId, string categoryCode, string accessLevel, string[] roles = null)
+        public async Task SetDefaultAccessLevelAsync(string facilityId, string categoryCode, string accessLevel, string[]? roles = null)
         {
             var category = await _context.DocumentCategories
                 .FirstOrDefaultAsync(c => c.FacilityId == facilityId && c.CategoryCode == categoryCode);
@@ -170,7 +170,7 @@ namespace DomumBackend.Infrastructure.Services
                 .ToListAsync();
         }
 
-        public async Task<bool> CanUserAccessDocumentAsync(string facilityId, long documentId, string userId, string requiredRole = null)
+        public async Task<bool> CanUserAccessDocumentAsync(string facilityId, long documentId, string userId, string? requiredRole = null)
         {
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == documentId && d.FacilityId == facilityId);
             if (document == null) return false;
@@ -258,7 +258,7 @@ namespace DomumBackend.Infrastructure.Services
                 .Where(a => a.FacilityId == facilityId && a.AccessedDate >= fromDate && a.AccessedDate <= toDate)
                 .GroupBy(a => a.AccessType)
                 .Select(g => new { Type = g.Key, Count = g.Count() })
-                .ToDictionaryAsync(x => x.Type, x => x.Count);
+                .ToDictionaryAsync(x => x.Type ?? "Unknown", x => x.Count);
         }
 
         public async Task<List<string>> GetMostAccessedDocumentsAsync(string facilityId, int topCount = 10)
@@ -482,7 +482,7 @@ namespace DomumBackend.Infrastructure.Services
         {
             return await _context.Documents
                 .Where(d => d.FacilityId == facilityId && d.ScheduledDeletionDate.HasValue && d.ScheduledDeletionDate >= fromDate && d.ScheduledDeletionDate <= toDate)
-                .Select(d => new ValueTuple<long, DateTime>(d.Id, d.ScheduledDeletionDate.Value))
+                .Select(d => new ValueTuple<long, DateTime>(d.Id, d.ScheduledDeletionDate!.Value))
                 .ToListAsync();
         }
 

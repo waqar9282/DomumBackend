@@ -5,11 +5,11 @@ namespace DomumBackend.Domain.Entities
 
     public class YoungPerson
     {
-        public string Id { get; set; } // Unique identifier (GUID or string)
-        public string FullName { get; set; }
+        public string? Id { get; set; } // Unique identifier (GUID or string)
+        public string? FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public Facility Facility { get; set; }
 
         public int? RoomId { get; set; }
@@ -18,7 +18,7 @@ namespace DomumBackend.Domain.Entities
         public ICollection<UserYoungPerson> UserYoungPersons { get; set; }
 
         // New properties
-        public string ProfilePicture { get; set; } // URL or file path
+        public string? ProfilePicture { get; set; } // URL or file path
         public DateTime DateOfEntryToFacility { get; set; }
         public Religion? Religion { get; set; } // Changed to enum
         public Gender? Gender { get; set; }
@@ -42,4 +42,5 @@ namespace DomumBackend.Domain.Entities
         public DateTime DeactivationDate { get; set; } = DateTime.MinValue; // Default to MinValue, indicating no deactivation date
     }
 }
+
 

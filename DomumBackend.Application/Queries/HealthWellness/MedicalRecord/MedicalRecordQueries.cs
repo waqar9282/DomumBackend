@@ -15,13 +15,13 @@ namespace DomumBackend.Application.Queries.HealthWellness.MedicalRecord
 
         public async Task<MedicalRecordResponseDTO> Handle(GetMedicalRecordByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _medicalRecordService.GetMedicalRecordByIdAsync(request.Id, cancellationToken);
+            return await _medicalRecordService.GetMedicalRecordByIdAsync(request.Id!, cancellationToken);
         }
     }
 
     public class GetMedicalRecordsByYoungPersonQuery : IRequest<List<MedicalRecordResponseDTO>>
     {
-        public string YoungPersonId { get; set; }
+        public string? YoungPersonId { get; set; }
 
         public GetMedicalRecordsByYoungPersonQuery(string youngPersonId)
         {
@@ -40,13 +40,13 @@ namespace DomumBackend.Application.Queries.HealthWellness.MedicalRecord
 
         public async Task<List<MedicalRecordResponseDTO>> Handle(GetMedicalRecordsByYoungPersonQuery request, CancellationToken cancellationToken)
         {
-            return await _medicalRecordService.GetMedicalRecordsByYoungPersonAsync(request.YoungPersonId, cancellationToken);
+            return await _medicalRecordService.GetMedicalRecordsByYoungPersonAsync(request.YoungPersonId!, cancellationToken);
         }
     }
 
     public class GetMedicalRecordsByFacilityQuery : IRequest<List<MedicalRecordResponseDTO>>
     {
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
 
         public GetMedicalRecordsByFacilityQuery(string facilityId)
         {
@@ -65,7 +65,8 @@ namespace DomumBackend.Application.Queries.HealthWellness.MedicalRecord
 
         public async Task<List<MedicalRecordResponseDTO>> Handle(GetMedicalRecordsByFacilityQuery request, CancellationToken cancellationToken)
         {
-            return await _medicalRecordService.GetMedicalRecordsByFacilityAsync(request.FacilityId, cancellationToken);
+            return await _medicalRecordService.GetMedicalRecordsByFacilityAsync(request.FacilityId!, cancellationToken);
         }
     }
 }
+

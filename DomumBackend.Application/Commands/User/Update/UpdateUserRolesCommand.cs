@@ -10,7 +10,7 @@ namespace DomumBackend.Application.Commands.User.Update
 {
     public class UpdateUserRolesCommand : IRequest<int>
     {
-        public string userName { get; set; }
+        public string? userName { get; set; }
         public IList<string> Roles { get; set; }
     }
 
@@ -29,4 +29,5 @@ namespace DomumBackend.Application.Commands.User.Update
         }
     }
 }
+
 

@@ -74,7 +74,7 @@ namespace DomumBackend.Infrastructure.Services
                 }
                 catch
                 {
-                    response.FailedFiles.Add(metadata.FileName);
+                    response.FailedFiles.Add(metadata.FileName ?? "Unknown");
                     response.FailedUploads++;
                 }
             }
@@ -159,7 +159,7 @@ namespace DomumBackend.Infrastructure.Services
             var query = searchQuery.ToLower();
             return await _context.Documents
                 .Where(d => d.FacilityId == facilityId && d.Status != "Deleted" &&
-                    (d.FileName.ToLower().Contains(query) || d.DocumentTitle.ToLower().Contains(query) || d.SearchableText.ToLower().Contains(query)))
+                    (d.FileName!.ToLower().Contains(query) || d.DocumentTitle!.ToLower().Contains(query) || (d.SearchableText ?? "").ToLower().Contains(query)))
                 .OrderByDescending(d => d.UploadedDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -223,7 +223,7 @@ namespace DomumBackend.Infrastructure.Services
                 .ToListAsync();
         }
 
-        public async Task<DocumentVersionDTO> CreateVersionAsync(long documentId, string facilityId, string userId, Stream newFileStream, string versionNotes)
+        public async Task<DocumentVersionDTO> CreateVersionAsync(long documentId, string facilityId, string userId, Stream newFileStream, string? versionNotes)
         {
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == documentId && d.FacilityId == facilityId);
             if (document == null) throw new Exception("Document not found");
@@ -300,7 +300,7 @@ namespace DomumBackend.Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task SetAccessLevelAsync(long documentId, string facilityId, string accessLevel, string[] allowedRoles = null, string[] allowedUserIds = null)
+        public async Task SetAccessLevelAsync(long documentId, string facilityId, string accessLevel, string[]? allowedRoles = null, string[]? allowedUserIds = null)
         {
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == documentId && d.FacilityId == facilityId);
             if (document == null) throw new Exception("Document not found");
@@ -335,7 +335,7 @@ namespace DomumBackend.Infrastructure.Services
             var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == documentId && d.FacilityId == facilityId);
             if (document == null) throw new Exception("Document not found");
 
-            document.AllowedUserIds = (document.AllowedUserIds ?? Array.Empty<string>()).Union(shareInfo.UserIds).ToArray();
+            document.AllowedUserIds = (document.AllowedUserIds ?? Array.Empty<string>()).Union(shareInfo.UserIds ?? Array.Empty<string>()).ToArray();
             await _context.SaveChangesAsync();
         }
 
@@ -523,9 +523,9 @@ namespace DomumBackend.Infrastructure.Services
                 Description = document.Description,
                 DocumentNumber = document.DocumentNumber,
                 DocumentDate = document.DocumentDate,
-                Tags = document.Tags,
-                AllowedRoles = document.AllowedRoles,
-                AllowedUserIds = document.AllowedUserIds,
+                Tags = document.Tags ?? Array.Empty<string>(),
+                AllowedRoles = document.AllowedRoles ?? Array.Empty<string>(),
+                AllowedUserIds = document.AllowedUserIds ?? Array.Empty<string>(),
                 RetentionReason = document.RetentionReason,
                 RetentionDays = document.RetentionDays,
                 ScheduledDeletionDate = document.ScheduledDeletionDate,

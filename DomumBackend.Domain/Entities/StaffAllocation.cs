@@ -12,21 +12,21 @@ namespace DomumBackend.Domain.Entities
         /// </summary>
         public required long StaffId { get; set; }
 
-        public Staff Staff { get; set; }
+        public Staff? Staff { get; set; }
 
         /// <summary>
         /// Young person ID (string type to match YoungPerson.Id)
         /// </summary>
         public required string YoungPersonId { get; set; }
 
-        public YoungPerson YoungPerson { get; set; }
+        public YoungPerson? YoungPerson { get; set; }
 
         /// <summary>
         /// Facility ID
         /// </summary>
         public required string FacilityId { get; set; }
 
-        public Facility Facility { get; set; }
+        public Facility? Facility { get; set; }
 
         /// <summary>
         /// Allocation type (Primary, Secondary, Backup, Specialist)
@@ -46,7 +46,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Reason for allocation
         /// </summary>
-        public string Reason { get; set; }
+        public string? Reason { get; set; }
 
         /// <summary>
         /// Is allocation active
@@ -61,22 +61,22 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Shift pattern (e.g., "Morning", "Afternoon", "Night", "Flexible")
         /// </summary>
-        public string ShiftPattern { get; set; }
+        public string? ShiftPattern { get; set; }
 
         /// <summary>
         /// Specialization areas (CSV)
         /// </summary>
-        public string SpecializationAreas { get; set; }
+        public string? SpecializationAreas { get; set; }
 
         /// <summary>
         /// Notes about allocation
         /// </summary>
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         /// <summary>
         /// User ID who created allocation
         /// </summary>
-        public string CreatedByUserId { get; set; }
+        public string? CreatedByUserId { get; set; }
 
         /// <summary>
         /// User ID who last modified allocation
@@ -86,7 +86,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Performance notes for this allocation
         /// </summary>
-        public string PerformanceNotes { get; set; }
+        public string? PerformanceNotes { get; set; }
 
         /// <summary>
         /// Allocation metrics
@@ -107,3 +107,4 @@ namespace DomumBackend.Domain.Entities
         public Dictionary<string, object> Metadata { get; set; } = new();
     }
 }
+

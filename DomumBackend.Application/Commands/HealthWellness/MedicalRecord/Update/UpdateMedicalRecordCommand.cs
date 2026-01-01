@@ -5,14 +5,14 @@ namespace DomumBackend.Application.Commands.HealthWellness.MedicalRecord
 {
     public class UpdateMedicalRecordCommand : IRequest<int>
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public int Status { get; set; }
-        public string FindingsObservations { get; set; }
-        public string Treatment { get; set; }
-        public string Prescription { get; set; }
-        public string ReferralTo { get; set; }
+        public string? FindingsObservations { get; set; }
+        public string? Treatment { get; set; }
+        public string? Prescription { get; set; }
+        public string? ReferralTo { get; set; }
         public DateTime? FollowUpDate { get; set; }
-        public string FollowUpNotes { get; set; }
+        public string? FollowUpNotes { get; set; }
     }
 
     public class UpdateMedicalRecordCommandHandler : IRequestHandler<UpdateMedicalRecordCommand, int>
@@ -39,3 +39,4 @@ namespace DomumBackend.Application.Commands.HealthWellness.MedicalRecord
         }
     }
 }
+

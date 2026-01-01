@@ -133,9 +133,9 @@ public class ComplianceAuditService : IComplianceAuditService
     {
         var audits = await _context.ComplianceAudits
             .Where(a => a.FacilityId == facilityId && 
-                (a.AuditName.Contains(searchTerm) || 
-                 a.Description.Contains(searchTerm) ||
-                 a.AuditType.Contains(searchTerm)))
+                (a.AuditName!.Contains(searchTerm) || 
+                 (a.Description ?? "").Contains(searchTerm) ||
+                 a.AuditType!.Contains(searchTerm)))
             .Include(a => a.ChecklistItems)
             .ToListAsync();
         return audits.Select(MapToDTO).ToList();
@@ -262,7 +262,7 @@ public class ComplianceAuditService : IComplianceAuditService
             .Select(g => new { Type = g.Key, Count = g.Count() })
             .ToListAsync();
 
-        return audits.ToDictionary(x => x.Type, x => x.Count);
+        return audits.ToDictionary(x => x.Type ?? "Unknown", x => x.Count);
     }
 
     public async Task<Dictionary<string, int>> GetAuditDistributionByStatusAsync(string facilityId)
@@ -273,7 +273,7 @@ public class ComplianceAuditService : IComplianceAuditService
             .Select(g => new { Status = g.Key, Count = g.Count() })
             .ToListAsync();
 
-        return audits.ToDictionary(x => x.Status, x => x.Count);
+        return audits.ToDictionary(x => x.Status ?? "Unknown", x => x.Count);
     }
 
     public async Task<List<ComplianceAuditDTO>> GetDueAuditsAsync(string facilityId, int daysThreshold)
@@ -771,7 +771,7 @@ public class ComplianceNonConformityService : IComplianceNonConformityService
             .Select(g => new { Severity = g.Key, Count = g.Count() })
             .ToListAsync();
 
-        return nonConformities.ToDictionary(x => x.Severity, x => x.Count);
+        return nonConformities.ToDictionary(x => x.Severity ?? "Unknown", x => x.Count);
     }
 
     public async Task<Dictionary<string, int>> GetDistributionByStatusAsync(string facilityId)
@@ -787,7 +787,7 @@ public class ComplianceNonConformityService : IComplianceNonConformityService
             .Select(g => new { Status = g.Key, Count = g.Count() })
             .ToListAsync();
 
-        return nonConformities.ToDictionary(x => x.Status, x => x.Count);
+        return nonConformities.ToDictionary(x => x.Status ?? "Unknown", x => x.Count);
     }
 
     private ComplianceNonConformityDTO MapToDTO(ComplianceNonConformity nc) => new()
@@ -922,7 +922,7 @@ public class ComplianceDocumentService : IComplianceDocumentService
     public async Task<List<ComplianceDocumentDTO>> SearchByTagsAsync(string tags)
     {
         var documents = await _context.ComplianceDocuments
-            .Where(d => d.Tags.Contains(tags))
+            .Where(d => d.Tags != null && d.Tags.Contains(tags))
             .ToListAsync();
         return documents.Select(MapToDTO).ToList();
     }

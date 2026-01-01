@@ -5,16 +5,16 @@ namespace DomumBackend.Application.Commands.HealthWellness.HealthAssessment
 {
     public class CreateHealthAssessmentCommand : IRequest<string>
     {
-        public string FacilityId { get; set; }
-        public string YoungPersonId { get; set; }
+        public string? FacilityId { get; set; }
+        public string? YoungPersonId { get; set; }
         public int AssessmentType { get; set; }
         public DateTime AssessmentDate { get; set; }
-        public string AssessedByProfessional { get; set; }
-        public string AssessmentLocation { get; set; }
-        public string AssessmentFindings { get; set; }
-        public string Recommendations { get; set; }
-        public string ReferralRequired { get; set; }
-        public string RecordedByUserId { get; set; }
+        public string? AssessedByProfessional { get; set; }
+        public string? AssessmentLocation { get; set; }
+        public string? AssessmentFindings { get; set; }
+        public string? Recommendations { get; set; }
+        public string? ReferralRequired { get; set; }
+        public string? RecordedByUserId { get; set; }
         public bool IsConfidential { get; set; }
     }
 
@@ -30,10 +30,10 @@ namespace DomumBackend.Application.Commands.HealthWellness.HealthAssessment
 
     public class UpdateHealthAssessmentCommand : IRequest<int>
     {
-        public string Id { get; set; }
-        public string AssessmentFindings { get; set; }
-        public string Recommendations { get; set; }
-        public string ReferralRequired { get; set; }
+        public string? Id { get; set; }
+        public string? AssessmentFindings { get; set; }
+        public string? Recommendations { get; set; }
+        public string? ReferralRequired { get; set; }
         public DateTime? NextAssessmentDate { get; set; }
     }
 
@@ -46,3 +46,4 @@ namespace DomumBackend.Application.Commands.HealthWellness.HealthAssessment
                 r.ReferralRequired, r.NextAssessmentDate, ct);
     }
 }
+

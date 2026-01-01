@@ -40,8 +40,8 @@ namespace DomumBackend.Api.Controllers
             [FromForm] IFormFile file,
             [FromQuery] string documentType = "General",
             [FromQuery] string category = "Uncategorized",
-            [FromQuery] string title = null,
-            [FromQuery] string description = null)
+            [FromQuery] string? title = null,
+            [FromQuery] string? description = null)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("No file provided");
@@ -254,8 +254,8 @@ namespace DomumBackend.Api.Controllers
                 DocumentId = documentId,
                 FacilityId = facilityId,
                 AccessLevel = request.AccessLevel,
-                AllowedRoles = request.AllowedRoles,
-                AllowedUserIds = request.AllowedUserIds
+                AllowedRoles = request.AllowedRoles ?? Array.Empty<string>(),
+                AllowedUserIds = request.AllowedUserIds ?? Array.Empty<string>()
             };
 
             await _mediator.Send(command);
@@ -336,7 +336,7 @@ namespace DomumBackend.Api.Controllers
         }
 
         [HttpDelete("{documentId}")]
-        public async Task<IActionResult> DeleteDocument(long documentId, [FromQuery] bool permanent = false, [FromQuery] string reason = null)
+        public async Task<IActionResult> DeleteDocument(long documentId, [FromQuery] bool permanent = false, [FromQuery] string? reason = null)
         {
             var facilityId = GetFacilityId();
             var userId = GetUserId();
@@ -403,18 +403,18 @@ namespace DomumBackend.Api.Controllers
 
     public class SetAccessLevelRequest
     {
-        public string AccessLevel { get; set; }
-        public string[] AllowedRoles { get; set; }
-        public string[] AllowedUserIds { get; set; }
+        public string? AccessLevel { get; set; }
+        public string[]? AllowedRoles { get; set; }
+        public string[]? AllowedUserIds { get; set; }
     }
 
     public class ApprovalRequest
     {
-        public string ApprovalNotes { get; set; }
+        public string? ApprovalNotes { get; set; }
     }
 
     public class RejectionRequest
     {
-        public string RejectionReason { get; set; }
+        public string? RejectionReason { get; set; }
     }
 }

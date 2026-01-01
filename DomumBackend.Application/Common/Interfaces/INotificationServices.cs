@@ -180,7 +180,7 @@ namespace DomumBackend.Application.Common.Interfaces
             string? emailHtml = null,
             string? smsBody = null,
             string? supportedVariables = null,
-            string createdByUserId = default,
+            string? createdByUserId = null,
             CancellationToken cancellationToken = default);
 
         Task<NotificationTemplateDTO> UpdateTemplateAsync(
@@ -191,7 +191,7 @@ namespace DomumBackend.Application.Common.Interfaces
             string? emailBody = null,
             string? emailHtml = null,
             bool isActive = true,
-            string updatedByUserId = default,
+            string? updatedByUserId = null,
             CancellationToken cancellationToken = default);
 
         Task<NotificationTemplateDTO> GetTemplateByKeyAsync(

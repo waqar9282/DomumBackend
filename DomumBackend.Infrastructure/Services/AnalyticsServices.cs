@@ -24,13 +24,13 @@ public class AnalyticsMetricService : IAnalyticsMetricService
         return MapToDTO(metric);
     }
 
-    public async Task<AnalyticsMetricDTO> GetMetricByIdAsync(Guid metricId)
+    public async Task<AnalyticsMetricDTO?> GetMetricByIdAsync(Guid metricId)
     {
         var metric = await _context.AnalyticsMetrics.FindAsync(metricId);
         return metric == null ? null : MapToDTO(metric);
     }
 
-    public async Task<AnalyticsMetricDTO> GetMetricByCodeAsync(string facilityId, string metricCode)
+    public async Task<AnalyticsMetricDTO?> GetMetricByCodeAsync(string facilityId, string metricCode)
     {
         var metric = await _context.AnalyticsMetrics.FirstOrDefaultAsync(m => m.FacilityId == facilityId && m.MetricCode == metricCode);
         return metric == null ? null : MapToDTO(metric);
@@ -98,8 +98,8 @@ public class AnalyticsMetricService : IAnalyticsMetricService
 
     public async Task<Dictionary<string, decimal>> CalculateAggregateMetricsAsync(string facilityId, List<string> metricCodes)
     {
-        var metrics = await _context.AnalyticsMetrics.Where(m => m.FacilityId == facilityId && metricCodes.Contains(m.MetricCode)).ToListAsync();
-        return metrics.GroupBy(m => m.Category).ToDictionary(g => g.Key, g => g.Average(m => m.MetricValue));
+        var metrics = await _context.AnalyticsMetrics.Where(m => m.FacilityId == facilityId && metricCodes.Contains(m.MetricCode!)).ToListAsync();
+        return metrics.GroupBy(m => m.Category ?? "Unknown").ToDictionary(g => g.Key, g => g.Average(m => m.MetricValue));
     }
 
     public async Task<List<AnalyticsMetricDTO>> CompareMetricsAsync(string facilityId1, string facilityId2, string category)
@@ -152,13 +152,13 @@ public class TrendAnalysisService : ITrendAnalysisService
         return MapToDTO(trend);
     }
 
-    public async Task<TrendAnalysisDTO> GetTrendAnalysisAsync(Guid trendId)
+    public async Task<TrendAnalysisDTO?> GetTrendAnalysisAsync(Guid trendId)
     {
         var trend = await _context.TrendAnalyses.FindAsync(trendId);
         return trend == null ? null : MapToDTO(trend);
     }
 
-    public async Task<TrendAnalysisDTO> GetLatestTrendAsync(long metricId)
+    public async Task<TrendAnalysisDTO?> GetLatestTrendAsync(long metricId)
     {
         var trend = await _context.TrendAnalyses.Where(t => t.AnalyticsMetricId == metricId).OrderByDescending(t => t.CreatedAnalysisDate).FirstOrDefaultAsync();
         return trend == null ? null : MapToDTO(trend);
@@ -254,10 +254,10 @@ public class PredictiveAlertService : IPredictiveAlertService
         return MapToDTO(alert);
     }
 
-    public async Task<PredictiveAlertDTO> GetAlertByIdAsync(Guid alertId)
+    public async Task<PredictiveAlertDTO?> GetAlertByIdAsync(Guid alertId)
     {
         var alert = await _context.PredictiveAlerts.FindAsync(alertId);
-        return alert == null ? null : MapToDTO(alert);
+        return alert == null ? null : MapToDTO(alert)!;
     }
 
     public async Task<List<PredictiveAlertDTO>> GetActiveAlertsAsync(string facilityId)
@@ -313,7 +313,7 @@ public class PredictiveAlertService : IPredictiveAlertService
         return MapToDTO(alert);
     }
 
-    public async Task<PredictiveAlertDTO> AcknowledgeAlertAsync(Guid alertId, Guid userId, string notes = null)
+    public async Task<PredictiveAlertDTO> AcknowledgeAlertAsync(Guid alertId, Guid userId, string? notes = null)
     {
         var alert = await _context.PredictiveAlerts.FindAsync(alertId);
         if (alert == null) throw new InvalidOperationException($"Alert {alertId} not found");
@@ -326,7 +326,7 @@ public class PredictiveAlertService : IPredictiveAlertService
         return MapToDTO(alert);
     }
 
-    public async Task<PredictiveAlertDTO> ResolveAlertAsync(Guid alertId, Guid userId, string notes = null)
+    public async Task<PredictiveAlertDTO> ResolveAlertAsync(Guid alertId, Guid userId, string? notes = null)
     {
         var alert = await _context.PredictiveAlerts.FindAsync(alertId);
         if (alert == null) throw new InvalidOperationException($"Alert {alertId} not found");
@@ -339,7 +339,7 @@ public class PredictiveAlertService : IPredictiveAlertService
         return MapToDTO(alert);
     }
 
-    public async Task<PredictiveAlertDTO> AssignAlertAsync(Guid alertId, Guid userId, string notes = null)
+    public async Task<PredictiveAlertDTO> AssignAlertAsync(Guid alertId, Guid userId, string? notes = null)
     {
         var alert = await _context.PredictiveAlerts.FindAsync(alertId);
         if (alert == null) throw new InvalidOperationException($"Alert {alertId} not found");
@@ -410,16 +410,16 @@ public class CustomDashboardService : ICustomDashboardService
         return MapToDTO(dashboard);
     }
 
-    public async Task<CustomDashboardDTO> GetDashboardByIdAsync(Guid dashboardId)
+    public async Task<CustomDashboardDTO?> GetDashboardByIdAsync(Guid dashboardId)
     {
         var dashboard = await _context.CustomDashboards.FindAsync(dashboardId);
-        return dashboard == null ? null : MapToDTO(dashboard);
+        return dashboard == null ? null : MapToDTO(dashboard)!;
     }
 
-    public async Task<CustomDashboardDTO> GetDashboardByCodeAsync(string facilityId, string dashboardCode)
+    public async Task<CustomDashboardDTO?> GetDashboardByCodeAsync(string facilityId, string dashboardCode)
     {
         var dashboard = await _context.CustomDashboards.FirstOrDefaultAsync(d => d.FacilityId == facilityId && d.DashboardCode == dashboardCode);
-        return dashboard == null ? null : MapToDTO(dashboard);
+        return dashboard == null ? null : MapToDTO(dashboard)!;
     }
 
     public async Task<List<CustomDashboardDTO>> GetDashboardsByFacilityAsync(string facilityId)
@@ -510,7 +510,7 @@ public class CustomDashboardService : ICustomDashboardService
         return MapToDTO(dashboard);
     }
 
-    public async Task<CustomDashboardDTO> ShareDashboardAsync(Guid dashboardId, List<Guid> userIds, List<string> roles = null)
+    public async Task<CustomDashboardDTO> ShareDashboardAsync(Guid dashboardId, List<Guid> userIds, List<string>? roles = null)
     {
         var dashboard = await _context.CustomDashboards.FindAsync(dashboardId);
         if (dashboard == null) throw new InvalidOperationException($"Dashboard {dashboardId} not found");

@@ -17,7 +17,7 @@ namespace DomumBackend.Domain.Entities
         /// </summary>
         public required string FacilityId { get; set; }
 
-        public Facility Facility { get; set; }
+        public Facility? Facility { get; set; }
 
         /// <summary>
         /// Staff member's full name
@@ -32,7 +32,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Phone number
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         /// <summary>
         /// Job title (e.g., "Care Worker", "Manager", "Deputy Manager")
@@ -42,7 +42,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Department (e.g., "Care", "Administration", "Health & Safety")
         /// </summary>
-        public string Department { get; set; }
+        public string? Department { get; set; }
 
         /// <summary>
         /// Employment status (Active, Inactive, OnLeave, Suspended, Terminated)
@@ -67,12 +67,12 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Qualifications/certifications (CSV or serialized list)
         /// </summary>
-        public string Qualifications { get; set; }
+        public string? Qualifications { get; set; }
 
         /// <summary>
         /// DBS Check status (NotStarted, Pending, Cleared, Suspended)
         /// </summary>
-        public string DBSCheckStatus { get; set; }
+        public string? DBSCheckStatus { get; set; }
 
         /// <summary>
         /// DBS Check expiry date
@@ -97,7 +97,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Supervision frequency (Weekly, BiWeekly, Monthly)
         /// </summary>
-        public string SupervisionFrequency { get; set; }
+        public string? SupervisionFrequency { get; set; }
 
         /// <summary>
         /// Last supervision date
@@ -112,27 +112,27 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Notes/comments about staff member
         /// </summary>
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         /// <summary>
         /// Emergency contact name
         /// </summary>
-        public string EmergencyContactName { get; set; }
+        public string? EmergencyContactName { get; set; }
 
         /// <summary>
         /// Emergency contact phone
         /// </summary>
-        public string EmergencyContactPhone { get; set; }
+        public string? EmergencyContactPhone { get; set; }
 
         /// <summary>
         /// Address
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// Postcode
         /// </summary>
-        public string Postcode { get; set; }
+        public string? Postcode { get; set; }
 
         /// <summary>
         /// Staff member's performance rating (1-5)
@@ -147,7 +147,7 @@ namespace DomumBackend.Domain.Entities
         /// <summary>
         /// Professional memberships
         /// </summary>
-        public string ProfessionalMemberships { get; set; }
+        public string? ProfessionalMemberships { get; set; }
 
         /// <summary>
         /// Background checks performed
@@ -180,3 +180,4 @@ namespace DomumBackend.Domain.Entities
         public Dictionary<string, object> Metadata { get; set; } = new();
     }
 }
+

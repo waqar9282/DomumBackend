@@ -7,7 +7,7 @@ namespace DomumBackend.Application.Queries.Documents
     public class GetDocumentByIdQuery : IRequest<DocumentDetailDTO>
     {
         public long DocumentId { get; set; }
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
     }
 
     public class GetDocumentByIdQueryHandler : IRequestHandler<GetDocumentByIdQuery, DocumentDetailDTO>
@@ -21,13 +21,13 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<DocumentDetailDTO> Handle(GetDocumentByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _documentService.GetDocumentByIdAsync(request.DocumentId, request.FacilityId);
+            return await _documentService.GetDocumentByIdAsync(request.DocumentId, request.FacilityId!);
         }
     }
 
     public class GetDocumentsByFacilityQuery : IRequest<List<DocumentDTO>>
     {
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 50;
     }
@@ -43,14 +43,14 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentDTO>> Handle(GetDocumentsByFacilityQuery request, CancellationToken cancellationToken)
         {
-            return await _documentService.GetDocumentsByFacilityAsync(request.FacilityId, request.PageNumber, request.PageSize);
+            return await _documentService.GetDocumentsByFacilityAsync(request.FacilityId!, request.PageNumber, request.PageSize);
         }
     }
 
     public class GetDocumentsByTypeQuery : IRequest<List<DocumentDTO>>
     {
-        public string FacilityId { get; set; }
-        public string DocumentType { get; set; }
+        public string? FacilityId { get; set; }
+        public string? DocumentType { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 50;
     }
@@ -66,14 +66,14 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentDTO>> Handle(GetDocumentsByTypeQuery request, CancellationToken cancellationToken)
         {
-            return await _documentService.GetDocumentsByTypeAsync(request.FacilityId, request.DocumentType, request.PageNumber, request.PageSize);
+            return await _documentService.GetDocumentsByTypeAsync(request.FacilityId!, request.DocumentType!, request.PageNumber, request.PageSize);
         }
     }
 
     public class SearchDocumentsQuery : IRequest<List<DocumentSearchResultDTO>>
     {
-        public string FacilityId { get; set; }
-        public string SearchQuery { get; set; }
+        public string? FacilityId { get; set; }
+        public string? SearchQuery { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 50;
     }
@@ -89,14 +89,14 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentSearchResultDTO>> Handle(SearchDocumentsQuery request, CancellationToken cancellationToken)
         {
-            return await _documentService.SearchDocumentsAsync(request.FacilityId, request.SearchQuery, request.PageNumber, request.PageSize);
+            return await _documentService.SearchDocumentsAsync(request.FacilityId!, request.SearchQuery!, request.PageNumber, request.PageSize);
         }
     }
 
     public class GetDocumentVersionsQuery : IRequest<List<DocumentVersionDTO>>
     {
         public long DocumentId { get; set; }
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
     }
 
     public class GetDocumentVersionsQueryHandler : IRequestHandler<GetDocumentVersionsQuery, List<DocumentVersionDTO>>
@@ -110,14 +110,14 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentVersionDTO>> Handle(GetDocumentVersionsQuery request, CancellationToken cancellationToken)
         {
-            return await _documentService.GetDocumentVersionsAsync(request.DocumentId, request.FacilityId);
+            return await _documentService.GetDocumentVersionsAsync(request.DocumentId, request.FacilityId!);
         }
     }
 
     public class GetDocumentAccessLogQuery : IRequest<List<DocumentAccessDTO>>
     {
         public long DocumentId { get; set; }
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 50;
     }
@@ -133,13 +133,13 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentAccessDTO>> Handle(GetDocumentAccessLogQuery request, CancellationToken cancellationToken)
         {
-            return await _accessService.GetAccessLogAsync(request.DocumentId, request.FacilityId, request.PageNumber, request.PageSize);
+            return await _accessService.GetAccessLogAsync(request.DocumentId, request.FacilityId!, request.PageNumber, request.PageSize);
         }
     }
 
     public class GetExpiringDocumentsQuery : IRequest<List<DocumentDTO>>
     {
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public int DaysUntilExpiry { get; set; } = 30;
     }
 
@@ -154,13 +154,13 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentDTO>> Handle(GetExpiringDocumentsQuery request, CancellationToken cancellationToken)
         {
-            return await _documentService.GetExpiringDocumentsAsync(request.FacilityId, request.DaysUntilExpiry);
+            return await _documentService.GetExpiringDocumentsAsync(request.FacilityId!, request.DaysUntilExpiry);
         }
     }
 
     public class GetDocumentCategoriesQuery : IRequest<List<DocumentCategoryDTO>>
     {
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public bool IncludeInactive { get; set; } = false;
     }
 
@@ -175,13 +175,13 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentCategoryDTO>> Handle(GetDocumentCategoriesQuery request, CancellationToken cancellationToken)
         {
-            return await _categoryService.GetAllCategoriesAsync(request.FacilityId, request.IncludeInactive);
+            return await _categoryService.GetAllCategoriesAsync(request.FacilityId!, request.IncludeInactive);
         }
     }
 
     public class GetRetentionScheduleQuery : IRequest<List<DocumentRetentionPolicyDTO>>
     {
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public bool IncludeInactive { get; set; } = false;
     }
 
@@ -196,13 +196,13 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentRetentionPolicyDTO>> Handle(GetRetentionScheduleQuery request, CancellationToken cancellationToken)
         {
-            return await _retentionService.GetPoliciesByFacilityAsync(request.FacilityId, request.IncludeInactive);
+            return await _retentionService.GetPoliciesByFacilityAsync(request.FacilityId!, request.IncludeInactive);
         }
     }
 
     public class GetAnomalousAccessesQuery : IRequest<List<DocumentAccessDTO>>
     {
-        public string FacilityId { get; set; }
+        public string? FacilityId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 50;
     }
@@ -218,7 +218,8 @@ namespace DomumBackend.Application.Queries.Documents
 
         public async Task<List<DocumentAccessDTO>> Handle(GetAnomalousAccessesQuery request, CancellationToken cancellationToken)
         {
-            return await _accessService.GetAnomalousAccessesAsync(request.FacilityId, request.PageNumber, request.PageSize);
+            return await _accessService.GetAnomalousAccessesAsync(request.FacilityId!, request.PageNumber, request.PageSize);
         }
     }
 }
+

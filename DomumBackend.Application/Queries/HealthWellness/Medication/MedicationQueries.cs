@@ -6,7 +6,7 @@ namespace DomumBackend.Application.Queries.HealthWellness.Medication
 {
     public class GetMedicationByIdQuery : IRequest<MedicationResponseDTO>
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public GetMedicationByIdQuery(string id) => Id = id;
     }
 
@@ -15,12 +15,12 @@ namespace DomumBackend.Application.Queries.HealthWellness.Medication
         private readonly IMedicationService _medicationService;
         public GetMedicationByIdQueryHandler(IMedicationService medicationService) => _medicationService = medicationService;
         public async Task<MedicationResponseDTO> Handle(GetMedicationByIdQuery request, CancellationToken cancellationToken)
-            => await _medicationService.GetMedicationByIdAsync(request.Id, cancellationToken);
+            => await _medicationService.GetMedicationByIdAsync(request.Id!, cancellationToken);
     }
 
     public class GetMedicationsByYoungPersonQuery : IRequest<List<MedicationResponseDTO>>
     {
-        public string YoungPersonId { get; set; }
+        public string? YoungPersonId { get; set; }
         public GetMedicationsByYoungPersonQuery(string youngPersonId) => YoungPersonId = youngPersonId;
     }
 
@@ -29,12 +29,12 @@ namespace DomumBackend.Application.Queries.HealthWellness.Medication
         private readonly IMedicationService _medicationService;
         public GetMedicationsByYoungPersonQueryHandler(IMedicationService medicationService) => _medicationService = medicationService;
         public async Task<List<MedicationResponseDTO>> Handle(GetMedicationsByYoungPersonQuery request, CancellationToken cancellationToken)
-            => await _medicationService.GetMedicationsByYoungPersonAsync(request.YoungPersonId, cancellationToken);
+            => await _medicationService.GetMedicationsByYoungPersonAsync(request.YoungPersonId!, cancellationToken);
     }
 
     public class GetActiveMedicationsByYoungPersonQuery : IRequest<List<MedicationResponseDTO>>
     {
-        public string YoungPersonId { get; set; }
+        public string? YoungPersonId { get; set; }
         public GetActiveMedicationsByYoungPersonQuery(string youngPersonId) => YoungPersonId = youngPersonId;
     }
 
@@ -43,6 +43,7 @@ namespace DomumBackend.Application.Queries.HealthWellness.Medication
         private readonly IMedicationService _medicationService;
         public GetActiveMedicationsByYoungPersonQueryHandler(IMedicationService medicationService) => _medicationService = medicationService;
         public async Task<List<MedicationResponseDTO>> Handle(GetActiveMedicationsByYoungPersonQuery request, CancellationToken cancellationToken)
-            => await _medicationService.GetActiveMedicationsByYoungPersonAsync(request.YoungPersonId, cancellationToken);
+            => await _medicationService.GetActiveMedicationsByYoungPersonAsync(request.YoungPersonId!, cancellationToken);
     }
 }
+

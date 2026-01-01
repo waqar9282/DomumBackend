@@ -11,7 +11,7 @@ namespace DomumBackend.Application.Queries.Role
 {
     public class GetRoleByIdQuery : IRequest<RoleResponseDTO>
     {
-        public string RoleId { get; set; }
+        public string? RoleId { get; set; }
     }
 
     public class GetRoleQueryByIdHandler : IRequestHandler<GetRoleByIdQuery, RoleResponseDTO>
@@ -29,4 +29,5 @@ namespace DomumBackend.Application.Queries.Role
         }
     }
 }
+
 

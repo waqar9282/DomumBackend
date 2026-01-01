@@ -10,7 +10,7 @@ namespace DomumBackend.Application.Commands.Role.Delete
 {
     public class DeleteRoleCommand : IRequest<int>
     {
-        public string RoleId { get; set; }
+        public string? RoleId { get; set; }
     }
 
     public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, int>
@@ -28,4 +28,5 @@ namespace DomumBackend.Application.Commands.Role.Delete
         }
     }
 }
+
 

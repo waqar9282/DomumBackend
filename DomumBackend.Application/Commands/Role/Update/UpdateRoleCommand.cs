@@ -10,8 +10,8 @@ namespace DomumBackend.Application.Commands.Role.Update
 {
     public class UpdateRoleCommand : IRequest<int>
     {
-        public string Id { get; set; }
-        public string RoleName { get; set; }
+        public string? Id { get; set; }
+        public string? RoleName { get; set; }
     }
 
     public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, int>
@@ -29,4 +29,5 @@ namespace DomumBackend.Application.Commands.Role.Update
         }
     }
 }
+
 
