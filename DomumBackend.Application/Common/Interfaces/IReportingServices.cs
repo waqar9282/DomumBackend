@@ -1,5 +1,10 @@
 namespace DomumBackend.Application.Common.Interfaces
 {
+    using DomumBackend.Application.DTOs;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Interface for incident reporting and analytics
     /// </summary>
@@ -140,3 +145,4 @@ namespace DomumBackend.Application.Common.Interfaces
             CancellationToken cancellationToken);
     }
 }
+

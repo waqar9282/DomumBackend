@@ -58,6 +58,22 @@ namespace DomumBackend.Infrastructure.Data
         public DbSet<DocumentAccess> DocumentAccesses { get; set; }
         public DbSet<DocumentRetention> DocumentRetentions { get; set; }
 
+        // Phase 3D: Advanced Analytics & Insights
+        public DbSet<AnalyticsMetric> AnalyticsMetrics { get; set; }
+        public DbSet<TrendAnalysis> TrendAnalyses { get; set; }
+        public DbSet<PredictiveAlert> PredictiveAlerts { get; set; }
+        public DbSet<CustomDashboard> CustomDashboards { get; set; }
+
+        // Phase 3E: Staff Management
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<StaffAllocation> StaffAllocations { get; set; }
+
+        // Phase 3F: Compliance & Auditing
+        public DbSet<ComplianceAudit> ComplianceAudits { get; set; }
+        public DbSet<ComplianceChecklistItem> ComplianceChecklistItems { get; set; }
+        public DbSet<ComplianceNonConformity> ComplianceNonConformities { get; set; }
+        public DbSet<ComplianceDocument> ComplianceDocuments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -547,6 +563,124 @@ namespace DomumBackend.Infrastructure.Data
                 .HasOne(dr => dr.Facility)
                 .WithMany()
                 .HasForeignKey(dr => dr.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Phase 3D: Analytics & Insights Configurations
+            modelBuilder.Entity<AnalyticsMetric>()
+                .HasIndex(am => am.FacilityId);
+            modelBuilder.Entity<AnalyticsMetric>()
+                .HasIndex(am => am.MetricCode);
+            modelBuilder.Entity<AnalyticsMetric>()
+                .HasIndex(am => am.Category);
+            modelBuilder.Entity<AnalyticsMetric>()
+                .HasIndex(am => am.Status);
+            modelBuilder.Entity<AnalyticsMetric>()
+                .HasIndex(am => am.MeasurementDate);
+            modelBuilder.Entity<AnalyticsMetric>()
+                .HasOne(am => am.Facility)
+                .WithMany()
+                .HasForeignKey(am => am.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TrendAnalysis>()
+                .HasIndex(ta => ta.FacilityId);
+            modelBuilder.Entity<TrendAnalysis>()
+                .HasIndex(ta => ta.AnalyticsMetricId);
+            modelBuilder.Entity<TrendAnalysis>()
+                .HasIndex(ta => ta.TrendType);
+            modelBuilder.Entity<TrendAnalysis>()
+                .HasIndex(ta => ta.CreatedAnalysisDate);
+            modelBuilder.Entity<TrendAnalysis>()
+                .HasOne(ta => ta.Facility)
+                .WithMany()
+                .HasForeignKey(ta => ta.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<TrendAnalysis>()
+                .HasOne(ta => ta.AnalyticsMetric)
+                .WithMany()
+                .HasForeignKey(ta => ta.AnalyticsMetricId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasIndex(pa => pa.FacilityId);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasIndex(pa => pa.AnalyticsMetricId);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasIndex(pa => pa.AlertType);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasIndex(pa => pa.Status);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasIndex(pa => pa.AlertCategory);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasIndex(pa => pa.AlertGeneratedDate);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasOne(pa => pa.Facility)
+                .WithMany()
+                .HasForeignKey(pa => pa.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PredictiveAlert>()
+                .HasOne(pa => pa.AnalyticsMetric)
+                .WithMany()
+                .HasForeignKey(pa => pa.AnalyticsMetricId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CustomDashboard>()
+                .HasIndex(cd => cd.FacilityId);
+            modelBuilder.Entity<CustomDashboard>()
+                .HasIndex(cd => cd.CreatedByUserId);
+            modelBuilder.Entity<CustomDashboard>()
+                .HasIndex(cd => cd.DashboardType);
+            modelBuilder.Entity<CustomDashboard>()
+                .HasIndex(cd => cd.IsDefault);
+            modelBuilder.Entity<CustomDashboard>()
+                .HasIndex(cd => cd.CreatedDate);
+            modelBuilder.Entity<CustomDashboard>()
+                .HasOne(cd => cd.Facility)
+                .WithMany()
+                .HasForeignKey(cd => cd.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Phase 3E: Staff Management Configurations
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.FacilityId);
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.UserId);
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.Email);
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.EmploymentStatus);
+            modelBuilder.Entity<Staff>()
+                .HasIndex(s => s.IsActive);
+            modelBuilder.Entity<Staff>()
+                .HasOne(s => s.Facility)
+                .WithMany()
+                .HasForeignKey(s => s.FacilityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StaffAllocation>()
+                .HasIndex(sa => sa.FacilityId);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasIndex(sa => sa.StaffId);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasIndex(sa => sa.YoungPersonId);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasIndex(sa => sa.IsActive);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasIndex(sa => sa.AllocationType);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasOne(sa => sa.Staff)
+                .WithMany()
+                .HasForeignKey(sa => sa.StaffId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasOne(sa => sa.YoungPerson)
+                .WithMany()
+                .HasForeignKey(sa => sa.YoungPersonId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<StaffAllocation>()
+                .HasOne(sa => sa.Facility)
+                .WithMany()
+                .HasForeignKey(sa => sa.FacilityId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

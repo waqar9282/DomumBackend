@@ -76,6 +76,22 @@ namespace DomumBackend.Infrastructure
             services.AddScoped<IDocumentAccessService, DocumentAccessService>();
             services.AddScoped<IDocumentRetentionService, DocumentRetentionService>();
             
+            // Phase 3D: Advanced Analytics & Insights Services
+            services.AddScoped<IAnalyticsMetricService>(sp => new AnalyticsMetricService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<ITrendAnalysisService>(sp => new TrendAnalysisService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<IPredictiveAlertService>(sp => new PredictiveAlertService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<ICustomDashboardService>(sp => new CustomDashboardService(sp.GetRequiredService<ApplicationDbContext>()));
+            
+            // Phase 3E: Staff Management Services
+            services.AddScoped<IStaffManagementService>(sp => new StaffManagementService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<IStaffAllocationService>(sp => new StaffAllocationService(sp.GetRequiredService<ApplicationDbContext>()));
+            
+            // Phase 3F: Compliance & Auditing Services
+            services.AddScoped<IComplianceAuditService>(sp => new ComplianceAuditService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<IComplianceChecklistService>(sp => new ComplianceChecklistService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<IComplianceNonConformityService>(sp => new ComplianceNonConformityService(sp.GetRequiredService<ApplicationDbContext>()));
+            services.AddScoped<IComplianceDocumentService>(sp => new ComplianceDocumentService(sp.GetRequiredService<ApplicationDbContext>()));
+            
             services.AddScoped(typeof(IQueryRepository<>), typeof(QueryRepository<>));
             services.AddScoped(typeof(ICommandRepository<>), typeof(CommandRepository<>));
 
