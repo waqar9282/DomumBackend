@@ -81,10 +81,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder =>
     {
-        // Allow the API to be called from the Angular dev server (http://localhost:4200)
-        // and the existing backend origin. Adjust or move to configuration for production.
         builder
-            .WithOrigins("https://localhost:7219", "http://localhost:4200")
+            .WithOrigins("https://localhost:7219", "http://localhost:4200", "https://localhost:4200")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();
@@ -105,10 +103,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-
 app.UseCors("CorsPolicy");
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

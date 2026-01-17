@@ -1,0 +1,49 @@
+<div class="login-container">
+  <div class="login-card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Domum Care System</mat-card-title>
+        <mat-card-subtitle>Login to your account</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Email or Username</mat-label>
+            <input matInput formControlName="userName" type="text" />
+            <mat-error *ngIf="f['userName'].hasError('required')">
+              Email or username is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" />
+            <mat-error *ngIf="f['password'].hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="f['password'].hasError('minlength')">
+              Password must be at least 6 characters
+            </mat-error>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="full-width submit-btn"
+            [disabled]="loading"
+          >
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">Sign In</span>
+          </button>
+        </form>
+      </mat-card-content>
+
+      <mat-card-footer>
+        <p class="footer-text">
+          Demo credentials: Admin&#64;yms.com / Admin&#64;yms.com
+        </p>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>

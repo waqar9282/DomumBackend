@@ -1,0 +1,294 @@
+@import './core/styles/theme.scss';
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
+/* ===================================
+   NAVBAR STYLING
+   =================================== */
+
+.navbar {
+  background: linear-gradient(90deg, $color-secondary 0%, darken($color-secondary, 5%) 100%);
+  color: $white;
+  padding: $spacing-md $spacing-lg;
+  box-shadow: $shadow-md;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    font-size: $font-size-lg;
+    font-weight: 700;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, $color-primary, $color-accent);
+      border-radius: $radius-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .brand-text {
+      letter-spacing: 1px;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: $spacing-lg;
+    align-items: center;
+
+    a {
+      color: $white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all $transition-fast;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $radius-sm;
+
+      &:hover {
+        background-color: rgba($color-primary, 0.2);
+        color: $color-primary;
+      }
+
+      &.active {
+        background-color: $color-primary;
+      }
+    }
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .user-info {
+      text-align: right;
+      font-size: $font-size-sm;
+
+      .username {
+        font-weight: 600;
+      }
+
+      .role {
+        color: rgba($white, 0.8);
+        font-size: $font-size-xs;
+      }
+    }
+
+    button {
+      background-color: rgba($color-accent, 0.8);
+      color: $white;
+      border: none;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $radius-sm;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all $transition-fast;
+
+      &:hover {
+        background-color: $color-accent;
+      }
+    }
+  }
+}
+
+/* ===================================
+   SIDEBAR STYLING
+   =================================== */
+
+.sidebar {
+  background-color: $white;
+  border-right: 1px solid $color-primary;
+  width: 250px;
+  height: 100%;
+  padding: $spacing-lg 0;
+  overflow-y: auto;
+
+  .sidebar-header {
+    padding: $spacing-lg;
+    border-bottom: 2px solid $color-primary;
+    margin-bottom: $spacing-lg;
+
+    h3 {
+      color: $color-secondary;
+      margin: 0;
+      font-size: $font-size-base;
+    }
+  }
+
+  .nav-group {
+    margin-bottom: $spacing-lg;
+
+    .group-title {
+      padding: $spacing-md $spacing-lg;
+      color: $gray;
+      font-size: $font-size-xs;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      padding: $spacing-md $spacing-lg;
+      color: $dark-gray;
+      text-decoration: none;
+      transition: all $transition-fast;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+
+      .icon {
+        font-size: 1.2rem;
+        color: $color-primary;
+      }
+
+      &:hover {
+        background-color: rgba($color-primary, 0.08);
+        border-left-color: $color-primary;
+      }
+
+      &.active {
+        background-color: rgba($color-primary, 0.15);
+        border-left-color: $color-primary;
+        font-weight: 600;
+        color: $color-primary;
+
+        .icon {
+          color: $color-accent;
+        }
+      }
+
+      &.role-badge {
+        margin: $spacing-lg $spacing-lg 0 $spacing-lg;
+        padding: $spacing-sm $spacing-md;
+        background: linear-gradient(135deg, rgba($color-primary, 0.1), rgba($color-accent, 0.1));
+        border: 1px solid $color-primary;
+        border-radius: $radius-md;
+        font-size: $font-size-sm;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: $color-secondary;
+        text-align: center;
+        border-left: none;
+
+        &:hover {
+          background: linear-gradient(135deg, rgba($color-primary, 0.15), rgba($color-accent, 0.15));
+          border-left: none;
+        }
+      }
+    }
+  }
+}
+
+/* ===================================
+   MAIN CONTENT
+   =================================== */
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: $light-gray;
+  padding: $spacing-xl;
+}
+
+/* ===================================
+   LAYOUT WRAPPER
+   =================================== */
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+
+  .sidebar {
+    flex-shrink: 0;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .navbar {
+      flex-shrink: 0;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      background-color: $light-gray;
+    }
+  }
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    z-index: $z-modal-backdrop;
+    transition: left $transition-base;
+
+    &.open {
+      left: 0;
+    }
+  }
+
+  .navbar .brand .brand-text {
+    display: none;
+  }
+
+  .navbar .nav-links {
+    display: none;
+  }
+
+  .app-layout {
+    flex-direction: column;
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .main {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: $spacing-md;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .main-content {
+    padding: $spacing-md;
+  }
+}

@@ -1,0 +1,260 @@
+@import '../../core/styles/theme.scss';
+
+.dashboard-container {
+  padding: $spacing-2xl;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .dashboard-header {
+    margin-bottom: $spacing-xl;
+    border-bottom: 3px solid $color-primary;
+    padding-bottom: $spacing-lg;
+
+    h1 {
+      color: $color-secondary;
+      margin-bottom: $spacing-md;
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      font-size: $font-size-3xl;
+
+      &::before {
+        content: '';
+        width: 8px;
+        height: 30px;
+        background-color: $color-primary;
+        border-radius: $radius-md;
+      }
+    }
+
+    p {
+      color: $gray;
+      font-size: $font-size-base;
+      margin: 0;
+    }
+  }
+
+  .role-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, $color-primary, darken($color-primary, 10%));
+    color: $white;
+    padding: $spacing-sm $spacing-lg;
+    border-radius: $radius-lg;
+    font-weight: 600;
+    margin-bottom: $spacing-lg;
+    box-shadow: $shadow-md;
+  }
+
+  .dashboard-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: $radius-lg;
+    border-left: 5px solid $color-primary;
+    box-shadow: $shadow-md;
+    transition: all $transition-base;
+
+    &:hover {
+      box-shadow: $shadow-lg;
+      border-left-color: $color-accent;
+    }
+
+    &.secondary-accent {
+      border-left-color: $color-secondary;
+
+      &:hover {
+        border-left-color: $color-primary;
+      }
+    }
+
+    &.accent {
+      border-left-color: $color-accent;
+
+      &:hover {
+        border-left-color: $color-primary;
+      }
+    }
+
+    mat-card-header {
+      margin-bottom: $spacing-lg;
+      padding: $spacing-lg;
+      border-bottom: 2px solid $color-primary;
+
+      mat-card-title {
+        font-size: $font-size-lg;
+        font-weight: 600;
+        color: $color-secondary;
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        &::before {
+          content: '';
+          width: 4px;
+          height: 20px;
+          background-color: $color-primary;
+          border-radius: 2px;
+        }
+      }
+    }
+
+    mat-card-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: $spacing-lg;
+
+      p {
+        margin: $spacing-md 0;
+        font-size: $font-size-base;
+        line-height: $line-height-relaxed;
+        color: $dark-gray;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .stat-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: $spacing-md;
+        margin: $spacing-lg 0;
+
+        .stat {
+          background: linear-gradient(135deg, rgba($color-primary, 0.1), rgba($color-primary, 0.05));
+          padding: $spacing-md;
+          border-radius: $radius-md;
+          text-align: center;
+
+          .label {
+            color: $gray;
+            font-size: $font-size-sm;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: $spacing-sm;
+          }
+
+          .value {
+            color: $color-primary;
+            font-size: $font-size-2xl;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+
+  mat-grid-list {
+    ::ng-deep {
+      mat-grid-tile {
+        mat-card {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* ===================================
+   UTILITY BADGE STYLES
+   =================================== */
+
+.badge {
+  display: inline-block;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: 600;
+
+  &.primary {
+    background-color: rgba($color-primary, 0.15);
+    color: $color-primary;
+    border: 1px solid $color-primary;
+  }
+
+  &.secondary {
+    background-color: rgba($color-secondary, 0.15);
+    color: $color-secondary;
+    border: 1px solid $color-secondary;
+  }
+
+  &.accent {
+    background-color: rgba($color-accent, 0.15);
+    color: $color-accent;
+    border: 1px solid $color-accent;
+  }
+
+  &.success {
+    background-color: rgba($success, 0.15);
+    color: $success;
+    border: 1px solid $success;
+  }
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: $spacing-xl;
+
+    .dashboard-header h1 {
+      font-size: $font-size-2xl;
+    }
+  }
+
+  mat-grid-list {
+    cols: 2 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: $spacing-lg;
+
+    .dashboard-header {
+      h1 {
+        font-size: $font-size-xl;
+      }
+
+      p {
+        font-size: $font-size-sm;
+      }
+    }
+
+    .dashboard-card mat-card-content .stat-group {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  mat-grid-list {
+    cols: 1 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: $spacing-md;
+
+    .dashboard-header {
+      h1 {
+        font-size: $font-size-lg;
+
+        &::before {
+          width: 6px;
+          height: 20px;
+        }
+      }
+    }
+
+    .dashboard-card mat-card-header {
+      padding: $spacing-md;
+    }
+
+    .dashboard-card mat-card-content {
+      padding: $spacing-md;
+    }
+  }
+}

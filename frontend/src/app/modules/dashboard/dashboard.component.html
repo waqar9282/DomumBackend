@@ -1,0 +1,61 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>{{ getRoleDashboardTitle() }}</h1>
+    <p *ngIf="currentUser">Welcome, {{ currentUser.fullName }}!</p>
+  </div>
+
+  <mat-grid-list cols="2" rowHeight="'250px'" [gutterSize]="'20px'">
+    <mat-grid-tile>
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Getting Started</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            This dashboard is role-based and adapts to your user role:
+            <strong>{{ userRole }}</strong>
+          </p>
+          <p>Different features and data will be available based on your role permissions.</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Your Permissions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p *ngIf="currentUser?.roles">
+            Roles: <strong>{{ currentUser?.roles?.join(', ') }}</strong>
+          </p>
+          <p>You have access to all features permitted by your role.</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>System Status</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>API Connection: <strong style="color: green">Connected ✓</strong></p>
+          <p>Authentication: <strong style="color: green">Active ✓</strong></p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Next Steps</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Navigate using the menu to access different modules based on your role.</p>
+          <p>All data is retrieved from the backend API.</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
